@@ -18,7 +18,7 @@
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
     <!-- MANIFEST para PWA/App -->
-    <link rel="manifest" href="manifest.json">
+    <link rel="manifest" href="./manifest.json">
 
     <script>
         tailwind.config = {
@@ -42,12 +42,13 @@
         }
     </script>
 
-    <!-- SERVICE WORKER -->
+    <!-- SERVICE WORKER CORREGIDO (ruta relativa) -->
     <script>
         if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/mensajeriaelresolvito/sw.js')
-                .then(() => console.log('✅ SW registrado'))
-                .catch(err => console.log('❌ Error SW:', err));
+            // Usar ruta relativa para evitar problemas de blob:
+            navigator.serviceWorker.register('./sw.js')
+                .then(() => console.log('✅ Service Worker registrado correctamente'))
+                .catch(err => console.log('❌ Error al registrar SW:', err));
         }
     </script>
 
@@ -438,11 +439,11 @@
         © 2025 El Resolvito · Mensajería en La Habana · +53 5 638 2909
     </footer>
 
-    <!-- CHATBOT VIVIAN (COMPLETAMENTE FUNCIONAL) -->
+    <!-- CHATBOT VIVIAN -->
     <div class="chatbot-container">
         <div class="chatbot-window" id="chatbotWindow">
             <div class="chatbot-header">
-                <img src="https://i.postimg.cc/L4ycRvNG/vivian.webp" alt="Vivian" class="chatbot-avatar">
+                <img src="./vivian.webp" alt="Vivian" class="chatbot-avatar">
                 <div class="text-white">
                     <strong>Vivian</strong><br>
                     <span class="text-xs opacity-90">Asistente · En línea</span>
@@ -457,7 +458,7 @@
             </div>
         </div>
         <div id="chatbotToggle" class="chatbot-toggle">
-            <img src="https://i.postimg.cc/L4ycRvNG/vivian.webp" class="w-12 h-12 rounded-full">
+            <img src="./vivian.webp" class="w-12 h-12 rounded-full">
         </div>
     </div>
 
@@ -484,7 +485,7 @@
             });
         }
 
-        // ==================== GEOLOCALIZACIÓN (simplificada pero funcional) ====================
+        // ==================== GEOLOCALIZACIÓN ====================
         const lugaresLocales = {
             "vedado": { lat: 23.123, lng: -82.398 },
             "miramar": { lat: 23.123, lng: -82.430 },
@@ -573,7 +574,7 @@
             entregaInput.addEventListener('input', () => { clearTimeout(timeoutCalc); timeoutCalc = setTimeout(actualizarPrecioPorDirecciones, 800); });
         }
 
-        // Envío de formulario a WhatsApp real
+        // Envío de formulario a WhatsApp
         const pedidoForm = document.getElementById('pedidoForm');
         if (pedidoForm) {
             pedidoForm.addEventListener('submit', async (e) => {
@@ -633,7 +634,7 @@
             if (progressBar) progressBar.style.width = (winScroll / height) * 100 + '%';
         });
 
-        // ==================== CHATBOT VIVIAN (COMPLETO E INTELIGENTE) ====================
+        // ==================== CHATBOT VIVIAN ====================
         let estadoVivian = { paso: "inicio", datos: { nombre: "", telefono: "", recogida: "", entrega: "", turno: "Mañana (7am)" } };
         
         const chatMessages = document.getElementById('chatbotMessages');
@@ -714,7 +715,6 @@
             const original = mensaje.trim();
             const msg = original.toLowerCase();
 
-            // Comandos rápidos
             if (msg === "ver tarifas") {
                 addMessage("💰 *Tarifas de referencia:*\n• Hasta 1km: 400 CUP\n• 1-2km: 500 CUP\n• 2-3km: 600 CUP\n• 3-4km: 700 CUP\n• 4-5km: 800 CUP\n• 5-7km: 1000 CUP\n• +8km: 1000 + (km-7)×150 CUP\n\n*El mensajero confirma el precio final.*");
                 setQuickOptions([{text:"📦 Solicitar", value:"solicitar"}, {text:"📍 Cobertura", value:"cobertura"}]);
@@ -732,7 +732,6 @@
                 return;
             }
 
-            // Extraer datos de un mensaje completo
             const telefono = extraerTelefono(original);
             const direcciones = detectarDirecciones(original);
             let nombre = null;
@@ -750,7 +749,6 @@
                 }
             }
 
-            // Si detecta nombre y direcciones, procesa directamente
             if (nombre && direcciones.recogida && direcciones.entrega) {
                 estadoVivian.datos = { nombre, telefono: telefono || "", recogida: direcciones.recogida, entrega: direcciones.entrega, turno: "Mañana (7am)" };
                 if (!telefono) {
@@ -775,7 +773,6 @@
                 return;
             }
 
-            // Flujo paso a paso
             switch (estadoVivian.paso) {
                 case "inicio":
                     addMessage("🤖 ¡Hola! Soy Vivian, tu asistente.\n\nEscribe **solicitar** para empezar o directamente tu pedido completo, por ejemplo:\n*Juan 56382909 Vedado a Miramar*");
@@ -867,7 +864,6 @@
             await processUserMessage(msg);
         }
 
-        // Eventos del chat
         if (chatToggle) {
             chatToggle.onclick = () => {
                 chatWindow.classList.toggle('active');
