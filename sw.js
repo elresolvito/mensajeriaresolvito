@@ -1,7 +1,11 @@
-const CACHE_NAME = 'resolvito-v1';
+const CACHE_NAME = 'resolvito-v2';
 const urlsToCache = [
-  '/mensajeriaelresolvito/',
-  '/mensajeriaelresolvito/index.html',
+  './',
+  './index.html',
+  './manifest.json',
+  './android-chrome-192x192.png',
+  './android-chrome-512x512.png',
+  './vivian.webp',
   'https://cdn.tailwindcss.com',
   'https://unpkg.com/aos@2.3.1/dist/aos.css',
   'https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css'
